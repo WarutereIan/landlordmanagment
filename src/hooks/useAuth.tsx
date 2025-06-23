@@ -18,7 +18,7 @@ interface AuthProviderProps {
 }
 
 // Development mode flag - set to false for production
-const isDevelopment = import.meta.env.DEV;
+const isDevelopment = true
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
