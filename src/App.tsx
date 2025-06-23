@@ -9,19 +9,22 @@ import PaymentMonitoring from './components/PaymentMonitoring';
 import Profile from './components/Profile';
 import BottomNav from './components/BottomNav';
 import Login from './components/Login';
-import MeterStats from './components/MeterStats';
 import ConsumptionAnalysis from './components/ConsumptionAnalysis';
+import LoadingSpinner from './components/LoadingSpinner';
+import MeterManagement from './components/MeterManagement';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, loading } = useAuth();
   const [activeView, setActiveView] = useState('dashboard');
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return <LoadingSpinner className="min-h-screen bg-gray-100" />;
+  }
 
-  if (!isLoggedIn) {
-    return <Login onLogin={handleLogin} />;
+  if (!user) {
+    return <Login />;
   }
 
   const renderContent = () => {
@@ -36,41 +39,15 @@ function App() {
         return <PropertyList />;
       case 'consumption':
         return <ConsumptionAnalysis />;
+      case 'meters':
+        return <MeterManagement />;
       default:
         return (
           <>
             {/* Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <DashboardCard
-                title="Total Properties"
-                value="12"
-                icon={<Building2 className="h-6 w-6 text-blue-600" />}
-                trend="+2 this month"
-              />
-              <DashboardCard
-                title="Active Tenants"
-                value="45"
-                icon={<Users className="h-6 w-6 text-green-600" />}
-                trend="+5 this month"
-              />
-              <DashboardCard
-                title="Total Revenue"
-                value="KSh 125,400"
-                icon={<Wallet className="h-6 w-6 text-emerald-600" />}
-                trend="+8% vs last month"
-              />
-              <DashboardCard
-                title="Active Alerts"
-                value="3"
-                icon={<AlertTriangle className="h-6 w-6 text-red-600" />}
-                trend="2 high priority"
-              />
-            </div>
+            <DashboardCard />
 
-            {/* Meters and Tanks Stats */}
-            <MeterStats />
-
-            {/* Charts and Lists */}
+            {/* Charts and Analytics */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -88,16 +65,13 @@ function App() {
 
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">Properties Overview</h2>
-                  <button className="text-sm text-blue-600 hover:text-blue-800">View All</button>
-                </div>
-                <PropertyList />
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6 lg:col-span-2">
-                <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900">Recent Alerts</h2>
-                  <button className="text-sm text-blue-600 hover:text-blue-800">View All</button>
+                  <button 
+                    onClick={() => setActiveView('consumption')}
+                    className="text-sm text-blue-600 hover:text-blue-800"
+                  >
+                    View All
+                  </button>
                 </div>
                 <AlertsList />
               </div>
@@ -115,7 +89,7 @@ function App() {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Droplet className="h-8 w-8 text-blue-600" />
-              <h1 className="ml-2 text-2xl font-bold text-gray-900">Smata Landlord</h1>
+              <h1 className="ml-2 text-2xl font-bold text-gray-900">Smarta Landlord</h1>
             </div>
             <div className="flex items-center space-x-4">
               <button className="p-2 rounded-full hover:bg-gray-100">

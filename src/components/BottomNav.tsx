@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, Wallet, Settings, Building2, Activity } from 'lucide-react';
+import { Home, Users, Wallet, Settings, Building2, Activity, Droplet } from 'lucide-react';
 
 interface BottomNavProps {
   activeView: string;
@@ -10,9 +10,9 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeView, setActiveView }) => {
   const menuItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
     { id: 'properties', icon: Building2, label: 'Properties' },
-    { id: 'consumption', icon: Activity, label: 'Analysis' },
+    { id: 'meters', icon: Droplet, label: 'Meters' },
     { id: 'tenants', icon: Users, label: 'Tenants' },
-    { id: 'payments', icon: Wallet, label: 'Payments' },
+    { id: 'consumption', icon: Activity, label: 'Analysis' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ];
 

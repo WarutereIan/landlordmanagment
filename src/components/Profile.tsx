@@ -1,7 +1,10 @@
 import React from 'react';
-import { User, Mail, Phone, MapPin, Building2 } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Building2, Users, Settings, Bell, Wallet, LogOut } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 const Profile = () => {
+  const { user, signOut } = useAuth();
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -12,27 +15,41 @@ const Profile = () => {
               <User className="h-12 w-12 text-gray-400" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">James Wilson</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Landlord User</h2>
               <p className="text-gray-500">Property Manager</p>
+              <div className="flex items-center space-x-2 text-blue-600 mt-1">
+                <Phone className="h-4 w-4" />
+                <span className="text-sm">{user?.phone || 'Phone not available'}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="bg-white shadow rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Account Information</h3>
         <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <Mail className="h-5 w-5 text-gray-400" />
-            <span className="text-gray-600">james.wilson@example.com</span>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">User ID</span>
+            <span className="font-medium text-sm">{user?.id?.substring(0, 8)}...</span>
           </div>
-          <div className="flex items-center space-x-3">
-            <Phone className="h-5 w-5 text-gray-400" />
-            <span className="text-gray-600">+254 712 345 678</span>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Phone Number</span>
+            <span className="font-medium">{user?.phone || 'Not available'}</span>
           </div>
-          <div className="flex items-center space-x-3">
-            <MapPin className="h-5 w-5 text-gray-400" />
-            <span className="text-gray-600">Nairobi, Kenya</span>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Account Status</span>
+            <span className="font-medium text-green-600">Active</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Last Sign In</span>
+            <span className="font-medium text-sm">
+              {user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'N/A'}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Role</span>
+            <span className="font-medium text-blue-600">Landlord</span>
           </div>
         </div>
       </div>
@@ -79,6 +96,16 @@ const Profile = () => {
             <Wallet className="h-5 w-5 text-gray-400" />
           </button>
         </div>
+      </div>
+
+      <div className="bg-white shadow rounded-lg p-6">
+        <button
+          onClick={signOut}
+          className="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center"
+        >
+          <LogOut className="h-5 w-5 mr-2" />
+          Sign Out
+        </button>
       </div>
     </div>
   );
