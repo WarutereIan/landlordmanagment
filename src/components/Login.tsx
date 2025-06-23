@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Phone, Lock, Droplet, AlertCircle } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
-const isDevelopment = import.meta.env.DEV;
+const isDevelopment = true
 
 const Login: React.FC = () => {
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
